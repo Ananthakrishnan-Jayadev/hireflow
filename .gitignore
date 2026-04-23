@@ -9,10 +9,10 @@ __pycache__/
 
 # ── Node / Frontend ───────────────────────────────────────────────────────────
 node_modules/
-frontend/react-copilot/node_modules/
+frontend/node_modules/
 dist/
 build/
-frontend/react-copilot/dist/
+frontend/dist/
 
 # ── Environment & Secrets ─────────────────────────────────────────────────────
 .env

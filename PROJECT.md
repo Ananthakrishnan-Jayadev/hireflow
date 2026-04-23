@@ -105,8 +105,8 @@ The Copilot is a real-time interview coaching assistant that provides live guida
 - `backend/services/realtime/schemas.py` - Request/response schemas
 
 **Frontend:**
-- `frontend/react-copilot/` - Standalone React + TypeScript + Vite + Zustand micro-frontend
-- Served at `/copilot` route
+- `frontend/` - React + TypeScript + Vite + Zustand frontend
+- Served at `/`, `/career`, and `/copilot`
 
 #### Workflow
 
@@ -299,19 +299,18 @@ hireflow/
 │   │       ├── biasAuditor.js
 │   │       └── loader.js
 │   │
-│   └── react-copilot/               # Copilot React micro-frontend
-│       ├── src/
-│       │   ├── main.tsx
-│       │   ├── App.tsx
-│       │   ├── components/
-│       │   ├── lib/
-│       │   ├── pages/
-│       │   ├── store/               # Zustand stores
-│       │   ├── types/
-│       │   └── styles.css
-│       ├── package.json
-│       ├── tsconfig.json
-│       └── vite.config.ts
+│   ├── src/
+│   │   ├── main.tsx
+│   │   ├── App.tsx
+│   │   ├── components/
+│   │   ├── lib/
+│   │   ├── pages/
+│   │   ├── store/                   # Zustand stores
+│   │   ├── types/
+│   │   └── styles.css
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
 │
 ├── requirements.txt                 # Python dependencies
 ├── README.md                        # Setup instructions
@@ -534,8 +533,8 @@ python seed.py
 # 7. Start server
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-# 8. Build Copilot frontend (optional)
-cd ../frontend/react-copilot
+# 8. Build frontend (optional)
+cd ../frontend
 npm install
 npm run build
 ```

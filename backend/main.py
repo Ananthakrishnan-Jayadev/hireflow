@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
 
 # Hide internal details from error responses in production
 app = FastAPI(
-    title="ShyftHatch API",
+    title="HireFlow API",
     description="AI-powered recruitment platform API",
     version="1.0.0",
     lifespan=lifespan,
@@ -100,48 +100,48 @@ async def health_check():
 # ── Static file serving ───────────────────────────────────────────────────
 
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
-COPILOT_FRONTEND_DIST = os.path.join(FRONTEND_DIR, "react-copilot", "dist")
-
-
-@app.get("/login")
-@app.get("/login.html")
-async def login_page():
-    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
+FRONTEND_DIST = os.path.join(FRONTEND_DIR, "dist")
 
 
 @app.get("/career")
 @app.get("/career.html")
 async def career_page():
-    return FileResponse(os.path.join(FRONTEND_DIR, "career.html"))
+    career_file = os.path.join(FRONTEND_DIST, "career.html")
+    if os.path.isfile(career_file):
+        return FileResponse(career_file)
+    return {
+        "message": "React career page not built yet. Run: cd frontend && npm install && npm run build"
+    }
 
 
 @app.middleware("http")
-async def no_cache_js_css(request: Request, call_next) -> Response:
-    """Prevent browsers from caching JS/CSS so new deployments take effect immediately."""
+async def no_cache_html(request: Request, call_next) -> Response:
+    """Prevent browsers from caching the SPA entry point."""
     response = await call_next(request)
-    path = request.url.path
-    if path.startswith("/js/") or path.startswith("/css/"):
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Pragma"]        = "no-cache"
-        response.headers["Expires"]       = "0"
+    if request.url.path in ("/", "/index.html") or not request.url.path.startswith("/static/"):
+        if response.headers.get("content-type", "").startswith("text/html"):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"]        = "no-cache"
+            response.headers["Expires"]       = "0"
     return response
-
-app.mount("/css",     StaticFiles(directory=os.path.join(FRONTEND_DIR, "css")),    name="css")
-app.mount("/js",      StaticFiles(directory=os.path.join(FRONTEND_DIR, "js")),     name="js")
-app.mount("/assets",  StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
 
 UPLOADS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), settings.UPLOAD_DIR)
 os.makedirs(UPLOADS_DIR, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
-if os.path.isdir(COPILOT_FRONTEND_DIST):
-    app.mount("/copilot", StaticFiles(directory=COPILOT_FRONTEND_DIST, html=True), name="copilot_frontend")
-else:
-    @app.get("/copilot")
-    @app.get("/copilot/")
-    async def copilot_placeholder():
-        return {
-            "message": "Copilot React frontend is not built yet. Run `cd frontend/react-copilot && npm install && npm run build`."
-        }
+app.mount("/assets",  StaticFiles(directory=os.path.join(FRONTEND_DIR, "assets")), name="assets")
+app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR),                           name="uploads")
 
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+REACT_STATIC = os.path.join(FRONTEND_DIST, "static")
+if os.path.isdir(REACT_STATIC):
+    app.mount("/static", StaticFiles(directory=REACT_STATIC), name="react_static")
+
+
+@app.get("/{full_path:path}")
+async def serve_react(full_path: str):
+    """Serve the React SPA for all non-API routes."""
+    index_file = os.path.join(FRONTEND_DIST, "index.html")
+    if os.path.isfile(index_file):
+        return FileResponse(index_file)
+    return {
+        "message": "React app not built yet. Run: cd frontend && npm install && npm run build"
+    }

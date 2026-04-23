@@ -259,58 +259,33 @@ hireflow/
 │   └── alembic/versions/         # Migration history
 │
 └── frontend/
-    ├── index.html                # SPA shell
-    ├── login.html                # Dedicated login page
-    ├── career.html               # Standalone public career page
     ├── assets/
     │   └── logo.svg
     │
-    ├── css/
-    │   ├── variables.css         # Design tokens (colours, spacing, radius)
-    │   ├── reset.css
-    │   ├── layout.css
-    │   ├── components.css
-    │   ├── dashboard.css
-    │   ├── kanban.css
-    │   ├── animations.css
-    │   └── career.css
-    │
-    ├── js/
-    │   ├── app.js                # SPA router (hash-based)
-    │   ├── api.js                # Fetch wrapper
-    │   │
-    │   ├── pages/
-    │   │   ├── dashboard.js
-    │   │   ├── analytics.js
-    │   │   ├── jobs.js
-    │   │   ├── jobCreate.js
-    │   │   ├── jobDetail.js
-    │   │   ├── candidates.js
-    │   │   ├── candidateProfile.js
-    │   │   ├── pipeline.js
-    │   │   ├── interviews.js
-    │   │   ├── interviewAssistant.js  # Dedicated interview question bank page
-    │   │   ├── scorecard.js
-    │   │   ├── emails.js
-    │   │   ├── adminUsers.js
-    │   │   └── career.js
-    │   │
-    │   └── components/
-    │       ├── sidebar.js
-    │       ├── topbar.js
-    │       ├── modal.js
-    │       ├── toast.js
-    │       ├── kanban.js
-    │       ├── charts.js
-    │       ├── biasAuditor.js
-    │       └── loader.js
-    │
-    └── react-copilot/            # Live Interview Copilot (React + Vite)
-        └── src/
-            ├── App.tsx
-            ├── pages/
-            └── components/
-                └── LiveCopilot.tsx
+    ├── index.html                # Main app entry
+    ├── career.html               # Public career page entry
+    ├── career-entry.tsx
+    ├── vite.config.ts
+    ├── package.json
+    └── src/
+        ├── App.tsx               # Browser router + protected routes
+        ├── styles.css            # Design system and app styles
+        ├── lib/                  # API, auth, helpers
+        ├── contexts/             # Auth + modal providers
+        ├── store/                # Toast and copilot stores
+        ├── pages/
+        │   ├── Dashboard.tsx
+        │   ├── Jobs.tsx / JobCreate.tsx / JobDetail.tsx
+        │   ├── Candidates.tsx / CandidateProfile.tsx
+        │   ├── Pipeline.tsx
+        │   ├── Interviews.tsx / Scorecard.tsx / InterviewAssistant.tsx
+        │   ├── Emails.tsx / Analytics.tsx / AdminUsers.tsx
+        │   ├── Career.tsx
+        │   └── LiveCopilot.tsx
+        └── components/
+            ├── layout/
+            ├── ui/
+            └── copilot/
 ```
 
 ---
@@ -321,17 +296,18 @@ hireflow/
 |---|---|
 | `http://localhost:8000/` | Main app — Dashboard |
 | `http://localhost:8000/login` | Login |
-| `http://localhost:8000/#/jobs` | Job listings |
-| `http://localhost:8000/#/candidates` | Candidate table |
-| `http://localhost:8000/#/pipeline` | Kanban pipeline |
-| `http://localhost:8000/#/interviews` | Interview schedule |
-| `http://localhost:8000/#/interview-assistant` | Interview question bank |
-| `http://localhost:8000/#/emails` | Email outreach |
-| `http://localhost:8000/#/analytics` | Analytics & charts |
-| `http://localhost:8000/#/admin-users` | Admin — manage users (admin-only) |
+| `http://localhost:8000/jobs` | Job listings |
+| `http://localhost:8000/candidates` | Candidate table |
+| `http://localhost:8000/pipeline` | Kanban pipeline |
+| `http://localhost:8000/interviews` | Interview schedule |
+| `http://localhost:8000/interview-assistant` | Interview question bank |
+| `http://localhost:8000/emails` | Email outreach |
+| `http://localhost:8000/analytics` | Analytics & charts |
+| `http://localhost:8000/admin-users` | Admin — manage users (admin-only) |
+| `http://localhost:8000/copilot` | Live Interview Copilot |
 | `http://localhost:8000/career` | Public job board (shareable) |
-| `http://localhost:8000/docs` | FastAPI Swagger UI (**dev only**) |
-| `http://localhost:8000/redoc` | FastAPI ReDoc (**dev only**) |
+| `http://localhost:8000/api/docs` | FastAPI Swagger UI (**dev only**) |
+| `http://localhost:8000/api/redoc` | FastAPI ReDoc (**dev only**) |
 
 ---
 
@@ -384,7 +360,7 @@ POST /api/meetstream/callback               Receive MeetStream bot status events
 ## AI Features
 
 ### Job Description Generator
-On the Job Detail page, click **Generate with AI**. Provide a role title, department, location, and key requirements. GPT generates a structured description, responsibilities, qualifications, and benefits — editable before saving.
+On the Create/Edit Job page, click **Generate JD**. Provide a role title, department, location, and key requirements. GPT generates a structured description, responsibilities, qualifications, and benefits — editable before saving.
 
 ### Email Composer
 On the Emails page, select a candidate and intent (outreach / follow-up / interview invite / rejection / offer). GPT drafts a personalised email that you can edit before sending.
@@ -393,7 +369,7 @@ On the Emails page, select a candidate and intent (outreach / follow-up / interv
 Each candidate can be scored against their assigned job. Click **Rank** on the Candidates list or candidate profile. GPT reads the job description + candidate resume and returns a 0–100 match score with one-sentence reasoning. Stored as a colour-coded badge (green ≥ 75 · amber 50–74 · red < 50).
 
 ### Interview Assistant
-A dedicated page (`#/interview-assistant`) to browse all jobs and generate or view AI question banks. Questions are categorised as behavioural / technical / situational / culture and stored per job.
+A dedicated page (`/interview-assistant`) to browse all jobs and generate or view AI question banks. Questions are categorised as behavioural / technical / situational / culture and stored per job.
 
 ### Live Interview Copilot
 A real-time coaching assistant that runs during live interviews. The copilot:
@@ -402,7 +378,7 @@ A real-time coaching assistant that runs during live interviews. The copilot:
 - Streams triggered questions to the recruiter in real time over a **WebSocket**
 - Supports **OpenAI**, **Anthropic (Claude)**, and **Ollama** as the underlying LLM — switchable per session
 
-The copilot UI is a separate React app (`frontend/react-copilot/`) served alongside the main app.
+The copilot UI is part of the React frontend in `frontend/` and is served alongside the main app.
 
 ### Talent Rediscovery
 When you open a role, generate a ranked list of existing candidates in your database who match the job — proactive outreach without waiting for new applicants.
@@ -430,8 +406,7 @@ For completed interviews, generate a structured debrief (verdict + confidence + 
 
 ## Development Notes
 
-- **No build step (main app)** — plain ES6 modules served directly by FastAPI's `StaticFiles`
-- **Copilot UI build** — `cd frontend/react-copilot && npm install && npm run build`; the dist is served by FastAPI
+- **Frontend build** — `cd frontend && npm install && npm run build`; the dist is served by FastAPI
 - **Hot reload** — run uvicorn with `--reload`; frontend changes take effect on browser refresh
 - **CORS** — configured via `ALLOWED_ORIGINS` (comma-separated). Defaults to local dev origins.
 - **Security headers** — HSTS (non-debug), frame blocking, referrer policy set via middleware
