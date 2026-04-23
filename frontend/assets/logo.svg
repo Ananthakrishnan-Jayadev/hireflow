@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Background rounded square -->
+  <rect width="200" height="200" rx="40" fill="#D4622B"/>
+
+  <!-- Person icon (simplified users/hiring metaphor) -->
+  <!-- Head of main person -->
+  <circle cx="100" cy="72" r="22" fill="white"/>
+  <!-- Body of main person -->
+  <path d="M60 150 C60 128 78 110 100 110 C122 110 140 128 140 150" stroke="white" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Small checkmark overlay (hired indicator) -->
+  <circle cx="140" cy="68" r="20" fill="#1A1714"/>
+  <path d="M131 68 L138 75 L150 60" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

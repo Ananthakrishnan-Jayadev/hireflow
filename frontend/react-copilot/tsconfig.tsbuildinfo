@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/copilot/ContextSidebar.tsx","./src/components/copilot/DebugMetrics.tsx","./src/components/copilot/StreamingResponsePanel.tsx","./src/lib/api.ts","./src/pages/LiveCopilot.tsx","./src/store/useCopilotStore.ts","./src/types/events.ts"],"version":"5.9.3"}

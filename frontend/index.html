@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>HireFlow — Recruitment Platform</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/reset.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/kanban.css" />
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Global header (dark blue) -->
+    <header class="global-header">
+      <a href="#/dashboard" class="global-header-logo">
+        <img src="/assets/logo.svg" alt="HireFlow" style="height:28px;width:auto;" />
+        <span>HireFlow</span>
+      </a>
+      <div class="global-header-search">
+        <!-- <div class="global-header-search-wrap">
+          <i data-lucide="search" class="search-icon" aria-hidden="true"></i>
+          <input type="text" placeholder="Search" class="form-input" aria-label="Search" />
+        </div> -->
+      </div>
+      <div class="global-header-actions">
+        <div class="global-header-user" id="header-user-info" style="position:relative;cursor:pointer;user-select:none;">
+          <span id="header-user-name">User</span>
+          <i data-lucide="chevron-down" style="width:13px;height:13px;opacity:0.7;" aria-hidden="true"></i>
+          <!-- Dropdown -->
+          <div id="header-user-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;
+               min-width:180px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;
+               box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;overflow:hidden;">
+            <div style="padding:12px 14px 8px;border-bottom:1px solid #f3f4f6;">
+              <div id="header-dropdown-name" style="font-size:13px;font-weight:600;color:#1a1d21;"></div>
+              <div id="header-dropdown-role" style="font-size:11px;color:#6b7280;margin-top:2px;"></div>
+            </div>
+            <button id="header-logout-btn"
+              style="width:100%;display:flex;align-items:center;gap:9px;padding:10px 14px;
+                     background:none;border:none;cursor:pointer;font-size:13px;font-weight:500;
+                     color:#dc2626;font-family:inherit;text-align:left;transition:background .12s;"
+              onmouseover="this.style.background='#fef2f2'"
+              onmouseout="this.style.background='none'">
+              <i data-lucide="log-out" style="width:14px;height:14px;"></i>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-row">
+      <!-- Sidebar -->
+      <div id="sidebar-container"></div>
+
+      <!-- Main area -->
+      <div class="main-area">
+        <!-- Mobile header -->
+        <header class="mobile-header">
+          <button class="btn-icon" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i data-lucide="menu"></i>
+          </button>
+          <img src="/assets/logo.svg" alt="HireFlow" class="mobile-logo-img" />
+        </header>
+
+        <!-- Page content injected by router -->
+        <main id="content" class="content-area"></main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container (injected by toast.js) -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- App entry point -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

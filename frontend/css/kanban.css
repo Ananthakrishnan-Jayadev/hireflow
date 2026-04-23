@@ -1,0 +1,202 @@
+/* ── Kanban board ────────────────────────────────────────────────── */
+.kanban-board {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding: var(--space-4) var(--space-8) var(--space-8);
+  min-height: calc(100vh - var(--topbar-height) - 80px);
+  align-items: flex-start;
+}
+
+.kanban-board::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kanban-board::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* ── Kanban column ───────────────────────────────────────────────── */
+.kanban-column {
+  flex-shrink: 0;
+  width: 280px;
+  background: var(--bg-body);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - var(--topbar-height) - 120px);
+}
+
+.kanban-column-header {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  border-top: 3px solid var(--stage-applied);
+}
+
+.kanban-column[data-stage="Applied"] .kanban-column-header { border-top-color: var(--stage-applied); }
+.kanban-column[data-stage="Screening"] .kanban-column-header { border-top-color: var(--stage-screening); }
+.kanban-column[data-stage="Interview"] .kanban-column-header { border-top-color: var(--stage-interview); }
+.kanban-column[data-stage="Offer"] .kanban-column-header { border-top-color: var(--stage-offer); }
+.kanban-column[data-stage="Hired"] .kanban-column-header { border-top-color: var(--stage-hired); }
+.kanban-column[data-stage="Rejected"] .kanban-column-header { border-top-color: var(--stage-rejected); }
+
+.kanban-column-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.kanban-column-count {
+  min-width: 22px;
+  height: 22px;
+  background: var(--border-light);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+}
+
+.kanban-column-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 80px;
+}
+
+.kanban-column-cards::-webkit-scrollbar {
+  width: 4px;
+}
+
+.kanban-column-cards::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+/* ── Drag-over state ─────────────────────────────────────────────── */
+.kanban-column-cards.drag-over {
+  background: var(--accent-muted);
+  border-radius: var(--radius-sm);
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+}
+
+/* ── Kanban card ─────────────────────────────────────────────────── */
+.kanban-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  cursor: grab;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+  user-select: none;
+}
+
+.kanban-card:active {
+  cursor: grabbing;
+}
+
+.kanban-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.kanban-card.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+  box-shadow: var(--shadow-lg);
+  cursor: grabbing;
+}
+
+.kanban-card.drag-placeholder {
+  border: 2px dashed var(--border);
+  background: var(--border-light);
+  opacity: 0.5;
+}
+
+.kanban-card-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.kanban-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.kanban-card-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.kanban-card-days {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.kanban-card-stars {
+  display: flex;
+  gap: 1px;
+}
+
+.kanban-card-stars .star {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Drag ghost ──────────────────────────────────────────────────── */
+.drag-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.9;
+  transform: rotate(3deg);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ── Job selector above board ────────────────────────────────────── */
+.kanban-job-selector {
+  padding: var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-body);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.kanban-job-selector .form-select {
+  max-width: 320px;
+}
+
+.kanban-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-8);
+  color: var(--text-muted);
+  font-size: 14px;
+}

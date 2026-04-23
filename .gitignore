@@ -1,0 +1,50 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+venv/
+backend/venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# ── Node / Frontend ───────────────────────────────────────────────────────────
+node_modules/
+frontend/react-copilot/node_modules/
+dist/
+build/
+frontend/react-copilot/dist/
+
+# ── Environment & Secrets ─────────────────────────────────────────────────────
+.env
+.env.*
+*.env
+!.env.example
+
+# ── Database & Uploads ────────────────────────────────────────────────────────
+*.db
+*.sqlite3
+backend/uploads/
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS & Editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Temp & Build Artifacts ────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.zip
+*.pyc
+
+# ── Project-specific ─────────────────────────────────────────────────────────
+notes.txt
+text.txt
+backend/test_transcript.json
+backend/TASK.md

@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShyftHatch — Product Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1e3a5f;
+      --navy2:  #162d4a;
+      --blue:   #2563eb;
+      --cyan:   #06b6d4;
+      --green:  #10b981;
+      --orange: #f59e0b;
+      --purple: #8b5cf6;
+      --pink:   #ec4899;
+      --white:  #ffffff;
+      --grey:   #f1f5f9;
+      --muted:  #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav dots ── */
+    .nav-dots {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    .nav-dot.active { background: #fff; transform: scale(1.4); }
+    .nav-dot:hover  { background: rgba(255,255,255,0.7); }
+
+    /* ── Slide base ── */
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-inner { width: 100%; max-width: 1100px; position: relative; z-index: 2; }
+
+    /* ── Gradient backgrounds ── */
+    .bg-hero   { background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 50%, #0f2744 100%); }
+    .bg-dark   { background: linear-gradient(135deg, #0d1b2e 0%, #0a1628 100%); }
+    .bg-navy   { background: linear-gradient(135deg, #0f2744 0%, #1a3255 100%); }
+    .bg-teal   { background: linear-gradient(135deg, #0a1628 0%, #0c2340 50%, #0d3347 100%); }
+    .bg-purple { background: linear-gradient(135deg, #0a1628 0%, #1a0f2e 100%); }
+    .bg-green  { background: linear-gradient(135deg, #0a1628 0%, #0b2219 100%); }
+    .bg-close  { background: linear-gradient(135deg, #1e3a5f 0%, #0a1628 100%); }
+
+    /* ── Decorative blobs ── */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    /* ── Typography ── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .tag-blue   { background: rgba(37,99,235,0.2);  color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
+    .tag-green  { background: rgba(16,185,129,0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+    .tag-purple { background: rgba(139,92,246,0.2); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.3); }
+    .tag-cyan   { background: rgba(6,182,212,0.2);  color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
+    .tag-orange { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+    .tag-pink   { background: rgba(236,72,153,0.2); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.3); }
+
+    h1.hero-title {
+      font-size: clamp(48px, 7vw, 84px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #06b6d4, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2.section-title {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    p.section-sub {
+      font-size: 18px;
+      color: #94a3b8;
+      line-height: 1.6;
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    /* ── Cards ── */
+    .glass-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      padding: 28px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .feature-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .feature-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .feature-grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .icon-blue   { background: rgba(37,99,235,0.2);  }
+    .icon-green  { background: rgba(16,185,129,0.2); }
+    .icon-purple { background: rgba(139,92,246,0.2); }
+    .icon-cyan   { background: rgba(6,182,212,0.2);  }
+    .icon-orange { background: rgba(245,158,11,0.2); }
+    .icon-pink   { background: rgba(236,72,153,0.2); }
+    .icon-navy   { background: rgba(30,58,95,0.4);   }
+
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .card-desc  { font-size: 13.5px; color: #94a3b8; line-height: 1.6; }
+
+    /* ── Hero stat pills ── */
+    .stat-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      padding: 10px 20px;
+    }
+    .stat-num  { font-size: 22px; font-weight: 800; }
+    .stat-lbl  { font-size: 12px; color: #94a3b8; line-height: 1.3; }
+
+    /* ── Pipeline visual ── */
+    .pipeline-stages {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-top: 40px;
+    }
+    .stage-col {
+      flex: 1;
+      border-radius: 14px;
+      padding: 18px 14px;
+      min-width: 0;
+    }
+    .stage-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      opacity: 0.7;
+    }
+    .stage-card {
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+    .stage-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    /* ── AI mock ── */
+    .ai-window {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .ai-titlebar {
+      background: rgba(255,255,255,0.06);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .dot-red   { width:10px;height:10px;border-radius:50%;background:#ff5f57; }
+    .dot-yell  { width:10px;height:10px;border-radius:50%;background:#ffbd2e; }
+    .dot-green { width:10px;height:10px;border-radius:50%;background:#28c840; }
+    .ai-body   { padding: 20px 24px; }
+
+    .q-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: flex-start;
+    }
+    .q-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .q-badge {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    /* ── Career page mock ── */
+    .career-mock {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      color: #1a1a1a;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+    .career-mock-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 20px;
+      font-weight: 800;
+      color: #1e3a5f;
+    }
+    .career-mock-body { display: flex; }
+    .career-mock-side {
+      width: 160px;
+      border-right: 1px solid #f3f4f6;
+      padding: 16px;
+      background: #fafafa;
+      flex-shrink: 0;
+    }
+    .mock-filter-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 4px; }
+    .mock-select { width: 100%; padding: 5px 8px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 11px; color: #374151; background: white; margin-bottom: 12px; }
+    .career-mock-main { flex: 1; padding: 16px; }
+    .mock-team-title { font-size: 13px; font-weight: 700; color: #1a1a1a; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 10px; }
+    .mock-job-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f9fafb; }
+    .mock-job-name { font-size: 12px; font-weight: 600; color: #1e3a5f; text-decoration: underline; cursor: pointer; }
+    .mock-job-meta { font-size: 10px; color: #9ca3af; }
+    .mock-apply-btn { font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 6px; background: #1e3a5f; color: white; border: none; }
+
+    /* ── Score ring ── */
+    .score-ring {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800;
+      position: relative;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+      50%       { box-shadow: 0 0 30px 10px rgba(37,99,235,0.2); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+
+    .animate-fade-up { animation: fadeUp 0.7s ease forwards; }
+    .delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .delay-2 { animation-delay: 0.2s; opacity: 0; }
+    .delay-3 { animation-delay: 0.3s; opacity: 0; }
+    .delay-4 { animation-delay: 0.4s; opacity: 0; }
+    .delay-5 { animation-delay: 0.5s; opacity: 0; }
+    .delay-6 { animation-delay: 0.6s; opacity: 0; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      margin: 28px 0;
+    }
+
+    /* ── Slide number ── */
+    .slide-num {
+      position: absolute;
+      bottom: 28px;
+      left: 80px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── Two-col layout ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+    /* ── Checklist ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; color: #cbd5e1;
+    }
+    .check-icon {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(16,185,129,0.2); color: #34d399;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── Logo ── */
+    .logo-mark {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 800; letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+    .logo-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: white;
+    }
+
+    /* ── Footer CTA ── */
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 16px 32px; border-radius: 50px;
+      font-size: 16px; font-weight: 700;
+      background: linear-gradient(135deg, #2563eb, #06b6d4);
+      color: white; border: none; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    .cta-btn:hover { transform: scale(1.04); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .two-col, .feature-grid-3, .three-col { grid-template-columns: 1fr; }
+      .feature-grid-2 { grid-template-columns: 1fr; }
+      .pipeline-stages { flex-direction: column; }
+      .nav-dots { display: none; }
+      .slide-num { left: 24px; }
+      h1.hero-title { font-size: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 1 — HERO
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-hero" id="slide-0">
+  <div class="blob" style="width:600px;height:600px;top:-200px;right:-100px;background:#2563eb;"></div>
+  <div class="blob" style="width:400px;height:400px;bottom:-100px;left:-100px;background:#06b6d4;"></div>
+
+  <div class="slide-inner" style="text-align:center;">
+    <div class="logo-mark animate-fade-up delay-1" style="justify-content:center;">
+      <div class="logo-icon">S</div>
+      ShyftHatch
+    </div>
+
+    <h1 class="hero-title animate-fade-up delay-2">
+      Hire Smarter.<br>
+      <span class="gradient-text">Powered by AI.</span>
+    </h1>
+
+    <p class="animate-fade-up delay-3" style="font-size:20px;color:#94a3b8;max-width:580px;margin:0 auto 16px;line-height:1.6;">
+      An end-to-end AI recruitment platform — from job creation to candidate evaluation and beyond.
+    </p>
+
+    <div class="stat-row animate-fade-up delay-4" style="justify-content:center;">
+      <div class="stat-pill">
+        <span style="font-size:24px;">🤖</span>
+        <div>
+          <div class="stat-num gradient-text">AI-First</div>
+          <div class="stat-lbl">Every feature powered<br>by intelligence</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span style="font-size:24px;">⚡</span>
+        <div>
+          <div class="stat-num gradient-text">End-to-End</div>
+          <div class="stat-lbl">Jobs → Pipeline →<br>Offer in one place</div>
+        </div>
+      </div>
+      <div class="stat-pill">
+        <span style="font-size:24px;">🌐</span>
+        <div>
+          <div class="stat-num gradient-text">Public Ready</div>
+          <div class="stat-lbl">Branded career page<br>for candidates</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">01 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 2 — PLATFORM OVERVIEW
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-dark" id="slide-1">
+  <div class="blob" style="width:500px;height:500px;top:50%;right:-150px;transform:translateY(-50%);background:#8b5cf6;"></div>
+
+  <div class="slide-inner">
+    <div class="tag tag-purple animate-fade-up delay-1">✦ Platform Overview</div>
+    <h2 class="section-title animate-fade-up delay-2">Everything you need.<br>Nothing you don't.</h2>
+    <p class="section-sub animate-fade-up delay-3">ShyftHatch brings your entire hiring workflow into one intelligent platform — from writing a JD to extending an offer.</p>
+
+    <div class="feature-grid feature-grid-3 animate-fade-up delay-3">
+      <div class="glass-card">
+        <div class="feature-icon icon-blue">📋</div>
+        <div class="card-title">Job Management</div>
+        <div class="card-desc">Create, manage and publish job postings with AI-generated descriptions in seconds.</div>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon icon-cyan">👥</div>
+        <div class="card-title">Candidate Tracking</div>
+        <div class="card-desc">Centralised candidate profiles with resume parsing, scoring and stage tracking.</div>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon icon-purple">🤖</div>
+        <div class="card-title">AI Match Scoring</div>
+        <div class="card-desc">Instantly rank candidates against job requirements with an explainable AI score.</div>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon icon-green">📅</div>
+        <div class="card-title">Interview Scheduler</div>
+        <div class="card-desc">Schedule interviews, assign interviewers and capture scorecards in one flow.</div>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon icon-orange">✉️</div>
+        <div class="card-title">Email Outreach</div>
+        <div class="card-desc">AI-drafted personalised emails for every hiring stage — outreach to offer.</div>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon icon-pink">📊</div>
+        <div class="card-title">Analytics</div>
+        <div class="card-desc">Real-time hiring metrics, funnel visualisation and pipeline health at a glance.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">02 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 3 — AI JD GENERATOR + MATCH SCORE
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-navy" id="slide-2">
+  <div class="blob" style="width:450px;height:450px;bottom:-100px;left:-100px;background:#2563eb;"></div>
+
+  <div class="slide-inner">
+    <div class="two-col">
+      <div>
+        <div class="tag tag-blue animate-fade-up delay-1">🤖 AI Features</div>
+        <h2 class="section-title animate-fade-up delay-2">AI that does the<br>heavy lifting.</h2>
+        <p class="section-sub animate-fade-up delay-3" style="margin-bottom:28px;">
+          From writing job descriptions to ranking candidates — our AI handles the time-consuming work so you can focus on the humans.
+        </p>
+        <ul class="checklist animate-fade-up delay-4">
+          <li><div class="check-icon">✓</div> Generate a full JD from just a few bullet points</li>
+          <li><div class="check-icon">✓</div> 3 tone options: Professional, Casual, Startup</li>
+          <li><div class="check-icon">✓</div> AI ranks every candidate 0–100 against the job</li>
+          <li><div class="check-icon">✓</div> Reasoning is saved to the candidate's notes</li>
+          <li><div class="check-icon">✓</div> Re-rank at any time — previous analysis replaced cleanly</li>
+        </ul>
+      </div>
+      <div class="animate-fade-up delay-4">
+        <div class="ai-window">
+          <div class="ai-titlebar">
+            <div class="dot-red"></div><div class="dot-yell"></div><div class="dot-green"></div>
+            <span style="font-size:12px;color:#64748b;margin-left:8px;">AI JD Generator</span>
+          </div>
+          <div class="ai-body">
+            <div style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Key Requirements</div>
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;font-size:12px;color:#cbd5e1;line-height:1.7;margin-bottom:14px;">
+              • 5+ years Python<br>• Strong SQL skills<br>• Cloud experience (AWS)
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
+              <div style="flex:1;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);border-radius:8px;padding:8px 12px;font-size:12px;color:#93c5fd;">⚡ Generate with AI</div>
+            </div>
+            <div class="divider" style="margin:10px 0;"></div>
+            <div style="font-size:11px;color:#64748b;margin-bottom:8px;">Generated Preview</div>
+            <div style="font-size:12px;color:#94a3b8;line-height:1.7;">
+              We are looking for a talented <span style="color:#60a5fa;">Senior Backend Engineer</span> to join our Data & AI team...
+            </div>
+            <div style="margin-top:12px;display:flex;align-items:center;gap:8px;">
+              <div style="width:64px;height:20px;border-radius:4px;background:linear-gradient(90deg,rgba(37,99,235,0.3),rgba(6,182,212,0.3));background-size:200%;animation:shimmer 1.5s infinite;"></div>
+              <div style="width:44px;height:20px;border-radius:4px;background:rgba(255,255,255,0.06);"></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+          <div style="flex:1;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+            <div class="score-ring" style="background:conic-gradient(#10b981 0% 87%, rgba(255,255,255,0.1) 87%);padding:4px;">
+              <div style="width:74px;height:74px;border-radius:50%;background:#0a1628;display:flex;align-items:center;justify-content:center;">
+                <span style="color:#34d399;font-size:20px;font-weight:800;">87%</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#34d399;">Strong Match</div>
+              <div style="font-size:11.5px;color:#6ee7b7;margin-top:4px;line-height:1.5;">AI Match Score<br>saved to notes ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">03 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 4 — HIRING PIPELINE
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-dark" id="slide-3">
+  <div class="blob" style="width:400px;height:400px;top:-100px;right:-50px;background:#10b981;"></div>
+
+  <div class="slide-inner">
+    <div class="tag tag-green animate-fade-up delay-1">⚡ Pipeline</div>
+    <h2 class="section-title animate-fade-up delay-2">Visual hiring pipeline.<br>Drag and drop.</h2>
+    <p class="section-sub animate-fade-up delay-3">Track every candidate across all hiring stages in a Kanban-style board. Move candidates between stages in one click.</p>
+
+    <div class="pipeline-stages animate-fade-up delay-4">
+      <div class="stage-col" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+        <div class="stage-label" style="color:#a5b4fc;">Applied <span class="stage-count" style="background:rgba(99,102,241,0.3);color:#c7d2fe;">8</span></div>
+        <div class="stage-card" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.2);">
+          <div style="font-size:12px;font-weight:600;">Sarah Chen</div>
+          <div style="font-size:10.5px;color:#a5b4fc;margin-top:2px;">Senior Engineer</div>
+          <div style="font-size:10px;color:#c7d2fe;margin-top:6px;">★★★★☆  Score: 92%</div>
+        </div>
+        <div class="stage-card" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.15);">
+          <div style="font-size:12px;font-weight:600;">James Park</div>
+          <div style="font-size:10.5px;color:#a5b4fc;margin-top:2px;">Data Scientist</div>
+        </div>
+      </div>
+      <div class="stage-col" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);">
+        <div class="stage-label" style="color:#67e8f9;">Screening <span class="stage-count" style="background:rgba(6,182,212,0.3);color:#a5f3fc;">5</span></div>
+        <div class="stage-card" style="background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.2);">
+          <div style="font-size:12px;font-weight:600;">Maria Gomez</div>
+          <div style="font-size:10.5px;color:#67e8f9;margin-top:2px;">Product Designer</div>
+          <div style="font-size:10px;color:#a5f3fc;margin-top:6px;">★★★★★  Score: 95%</div>
+        </div>
+      </div>
+      <div class="stage-col" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">
+        <div class="stage-label" style="color:#fcd34d;">Interview <span class="stage-count" style="background:rgba(245,158,11,0.3);color:#fde68a;">3</span></div>
+        <div class="stage-card" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.2);">
+          <div style="font-size:12px;font-weight:600;">Alex Kim</div>
+          <div style="font-size:10.5px;color:#fcd34d;margin-top:2px;">Backend Engineer</div>
+        </div>
+      </div>
+      <div class="stage-col" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);">
+        <div class="stage-label" style="color:#c4b5fd;">Offer <span class="stage-count" style="background:rgba(139,92,246,0.3);color:#ddd6fe;">1</span></div>
+        <div class="stage-card" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.2);">
+          <div style="font-size:12px;font-weight:600;">Priya Nair</div>
+          <div style="font-size:10.5px;color:#c4b5fd;margin-top:2px;">ML Engineer</div>
+          <div style="font-size:10px;color:#ddd6fe;margin-top:6px;">★★★★★  Score: 98%</div>
+        </div>
+      </div>
+      <div class="stage-col" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);">
+        <div class="stage-label" style="color:#6ee7b7;">Hired <span class="stage-count" style="background:rgba(16,185,129,0.3);color:#a7f3d0;">4</span></div>
+        <div class="stage-card" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.2);">
+          <div style="font-size:12px;font-weight:600;">Tom Walsh</div>
+          <div style="font-size:10.5px;color:#6ee7b7;margin-top:2px;">DevOps Lead</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">04 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 5 — INTERVIEW ASSISTANT
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-purple" id="slide-4">
+  <div class="blob" style="width:500px;height:500px;top:50%;left:-150px;transform:translateY(-50%);background:#8b5cf6;"></div>
+
+  <div class="slide-inner">
+    <div class="two-col">
+      <div>
+        <div class="tag tag-purple animate-fade-up delay-1">🎙️ Interview Assistant</div>
+        <h2 class="section-title animate-fade-up delay-2">Never walk into an<br>interview unprepared.</h2>
+        <p class="section-sub animate-fade-up delay-3" style="margin-bottom:28px;">
+          Select any open job and the AI generates 10 role-specific interview questions — categorised and paired with guidance notes for interviewers.
+        </p>
+        <ul class="checklist animate-fade-up delay-4">
+          <li><div class="check-icon">✓</div> Questions generated from the actual job description</li>
+          <li><div class="check-icon">✓</div> 4 categories: Behavioural, Technical, Situational, Culture</li>
+          <li><div class="check-icon">✓</div> Each question has an interviewer guidance note</li>
+          <li><div class="check-icon">✓</div> Regenerate to get a fresh set instantly</li>
+        </ul>
+      </div>
+      <div class="animate-fade-up delay-4">
+        <div class="ai-window">
+          <div class="ai-titlebar">
+            <div class="dot-red"></div><div class="dot-yell"></div><div class="dot-green"></div>
+            <span style="font-size:12px;color:#64748b;margin-left:8px;">Interview Assistant — Senior Backend Engineer</span>
+          </div>
+          <div class="ai-body" style="padding:16px 20px;">
+            <div class="q-item">
+              <div class="q-num">1</div>
+              <div>
+                <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+                  <span class="q-badge" style="background:rgba(16,185,129,0.2);color:#6ee7b7;">Technical</span>
+                </div>
+                <div style="font-size:12.5px;font-weight:600;color:#e2e8f0;line-height:1.4;">How do you approach database query optimisation at scale?</div>
+                <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;">💡 Listen for: indexing strategies, query analysis tools, N+1 problem awareness.</div>
+              </div>
+            </div>
+            <div class="q-item">
+              <div class="q-num">2</div>
+              <div>
+                <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+                  <span class="q-badge" style="background:rgba(37,99,235,0.2);color:#93c5fd;">Behavioural</span>
+                </div>
+                <div style="font-size:12.5px;font-weight:600;color:#e2e8f0;line-height:1.4;">Describe a time you had to debug a critical production issue under pressure.</div>
+                <div style="font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;">💡 Listen for: structured debugging process, communication under stress.</div>
+              </div>
+            </div>
+            <div class="q-item" style="border:none;">
+              <div class="q-num">3</div>
+              <div>
+                <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+                  <span class="q-badge" style="background:rgba(245,158,11,0.2);color:#fcd34d;">Situational</span>
+                </div>
+                <div style="font-size:12.5px;font-weight:600;color:#e2e8f0;line-height:1.4;">If you inherited a poorly documented codebase, what would be your first steps?</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;text-align:right;font-size:11px;color:#475569;">+ 7 more questions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">05 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 6 — CAREER PAGE
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-teal" id="slide-5">
+  <div class="blob" style="width:450px;height:450px;top:-100px;right:-100px;background:#06b6d4;"></div>
+
+  <div class="slide-inner">
+    <div class="two-col">
+      <div>
+        <div class="tag tag-cyan animate-fade-up delay-1">🌐 Career Page</div>
+        <h2 class="section-title animate-fade-up delay-2">A branded job board<br>your candidates will love.</h2>
+        <p class="section-sub animate-fade-up delay-3" style="margin-bottom:28px;">
+          A public-facing career page instantly reflects all open jobs. Candidates can search, filter and apply — no login needed.
+        </p>
+        <ul class="checklist animate-fade-up delay-4">
+          <li><div class="check-icon">✓</div> Jobs grouped by department automatically</li>
+          <li><div class="check-icon">✓</div> Filter by location type, team, work type</li>
+          <li><div class="check-icon">✓</div> Click any job to view the full description</li>
+          <li><div class="check-icon">✓</div> One-click application with resume upload</li>
+          <li><div class="check-icon">✓</div> Submissions flow directly into the ATS</div>
+        </ul>
+      </div>
+      <div class="animate-fade-up delay-4">
+        <div class="career-mock" style="font-family:'Inter',sans-serif;">
+          <div class="career-mock-header">Shyftlabs Careers</div>
+          <div class="career-mock-body">
+            <div class="career-mock-side">
+              <div class="mock-filter-lbl">Location Type</div>
+              <select class="mock-select"><option>All</option></select>
+              <div class="mock-filter-lbl">Team</div>
+              <select class="mock-select"><option>Engineering</option></select>
+              <div class="mock-filter-lbl">Work Type</div>
+              <select class="mock-select"><option>Full-Time</option></select>
+            </div>
+            <div class="career-mock-main">
+              <div class="mock-team-title">Engineering</div>
+              <div class="mock-job-row">
+                <div>
+                  <div class="mock-job-name">Senior Backend Engineer</div>
+                  <div class="mock-job-meta">Full-time · Remote</div>
+                </div>
+                <button class="mock-apply-btn">Apply</button>
+              </div>
+              <div class="mock-job-row">
+                <div>
+                  <div class="mock-job-name">Data Scientist</div>
+                  <div class="mock-job-meta">Full-time · Hybrid</div>
+                </div>
+                <button class="mock-apply-btn">Apply</button>
+              </div>
+              <div class="mock-team-title" style="margin-top:14px;">Design</div>
+              <div class="mock-job-row" style="border:none;">
+                <div>
+                  <div class="mock-job-name">Product Designer</div>
+                  <div class="mock-job-meta">Full-time · New York</div>
+                </div>
+                <button class="mock-apply-btn">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">06 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 7 — EMAIL + ANALYTICS
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-green" id="slide-6">
+  <div class="blob" style="width:500px;height:500px;bottom:-200px;right:-100px;background:#10b981;"></div>
+
+  <div class="slide-inner">
+    <div class="tag tag-green animate-fade-up delay-1">📬 Engage & Measure</div>
+    <h2 class="section-title animate-fade-up delay-2">Communicate smarter.<br>Measure everything.</h2>
+    <p class="section-sub animate-fade-up delay-3">AI-written outreach emails and real-time analytics so you always know where your pipeline stands.</p>
+
+    <div class="feature-grid feature-grid-2 animate-fade-up delay-4" style="gap:20px;">
+      <div class="glass-card" style="border-color:rgba(16,185,129,0.2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div class="feature-icon icon-green" style="margin:0;">✉️</div>
+          <div>
+            <div class="card-title">AI Email Outreach</div>
+            <div style="font-size:11px;color:#6ee7b7;">Powered by GPT</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;font-size:12px;color:#94a3b8;line-height:1.7;margin-bottom:14px;">
+          <div style="color:#6ee7b7;font-weight:600;margin-bottom:4px;">Subject: Exciting Opportunity at Shyftlabs 🚀</div>
+          Hi Sarah,<br>We came across your profile and think you'd be a great fit for our Senior Engineer role at Shyftlabs...
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:10.5px;padding:3px 10px;border-radius:12px;background:rgba(16,185,129,0.15);color:#6ee7b7;">Outreach</span>
+          <span style="font-size:10.5px;padding:3px 10px;border-radius:12px;background:rgba(16,185,129,0.15);color:#6ee7b7;">Interview Invite</span>
+          <span style="font-size:10.5px;padding:3px 10px;border-radius:12px;background:rgba(16,185,129,0.15);color:#6ee7b7;">Offer</span>
+          <span style="font-size:10.5px;padding:3px 10px;border-radius:12px;background:rgba(16,185,129,0.15);color:#6ee7b7;">Rejection</span>
+        </div>
+      </div>
+      <div class="glass-card" style="border-color:rgba(6,182,212,0.2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <div class="feature-icon icon-cyan" style="margin:0;">📊</div>
+          <div>
+            <div class="card-title">Real-time Analytics</div>
+            <div style="font-size:11px;color:#67e8f9;">Live dashboard</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:rgba(6,182,212,0.1);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:26px;font-weight:800;color:#67e8f9;">24</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Open Jobs</div>
+          </div>
+          <div style="background:rgba(139,92,246,0.1);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:26px;font-weight:800;color:#c4b5fd;">148</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Candidates</div>
+          </div>
+          <div style="background:rgba(16,185,129,0.1);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:26px;font-weight:800;color:#34d399;">12</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Hired</div>
+          </div>
+          <div style="background:rgba(245,158,11,0.1);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:26px;font-weight:800;color:#fcd34d;">18d</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Avg. Time-to-Hire</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 14px;font-size:11.5px;color:#6ee7b7;display:flex;align-items:center;gap:6px;">
+          <span>↑</span> 23% more hires vs. last quarter
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">07 / 08</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SLIDE 8 — CLOSING
+════════════════════════════════════════════════════════ -->
+<section class="slide bg-close" id="slide-7">
+  <div class="blob" style="width:700px;height:700px;top:50%;left:50%;transform:translate(-50%,-50%);background:#2563eb;"></div>
+
+  <div class="slide-inner" style="text-align:center;">
+    <div class="logo-mark animate-fade-up delay-1" style="justify-content:center;">
+      <div class="logo-icon" style="animation:float 3s ease-in-out infinite;">S</div>
+      ShyftHatch
+    </div>
+
+    <h2 class="section-title animate-fade-up delay-2" style="font-size:clamp(36px,5vw,64px);margin-bottom:16px;">
+      The future of hiring<br>is <span class="gradient-text">already here.</span>
+    </h2>
+
+    <p class="animate-fade-up delay-3" style="font-size:18px;color:#94a3b8;max-width:520px;margin:0 auto 48px;line-height:1.6;">
+      Built for modern recruitment teams who want to move fast, hire better, and never miss a great candidate.
+    </p>
+
+    <div class="animate-fade-up delay-4" style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:56px;">
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;min-width:0;">
+        <span style="font-size:20px;">🤖</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">AI JD Generator</div><div style="font-size:11px;color:#64748b;">Write JDs in seconds</div></div>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">🎯</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">AI Match Scoring</div><div style="font-size:11px;color:#64748b;">Rank candidates instantly</div></div>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">🎙️</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Interview Assistant</div><div style="font-size:11px;color:#64748b;">10 smart questions, any role</div></div>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">🌐</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Career Page</div><div style="font-size:11px;color:#64748b;">Branded public job board</div></div>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">📊</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Analytics</div><div style="font-size:11px;color:#64748b;">Real-time hiring metrics</div></div>
+      </div>
+      <div class="glass-card" style="padding:14px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">✉️</span>
+        <div style="text-align:left;"><div style="font-size:13px;font-weight:700;">Email Outreach</div><div style="font-size:11px;color:#64748b;">AI-drafted, personalised</div></div>
+      </div>
+    </div>
+
+    <a href="/" class="cta-btn animate-fade-up delay-5">
+      ✦ &nbsp;Open ShyftHatch
+    </a>
+
+    <p class="animate-fade-up delay-6" style="margin-top:28px;font-size:12px;color:#334155;">
+      Built with ❤️ for the Shyftlabs Hackathon
+    </p>
+  </div>
+  <div class="slide-num">08 / 08</div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+  const titles  = ['Intro','Overview','AI Features','Pipeline','Interview AI','Career Page','Email & Analytics','Summary'];
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    btn.title = titles[i];
+    btn.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth' });
+    });
+    navDots.appendChild(btn);
+  });
+
+  // Update active dot on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        navDots.querySelectorAll('.nav-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    const dots = navDots.querySelectorAll('.nav-dot');
+    const activeIdx = Array.from(dots).findIndex(d => d.classList.contains('active'));
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      if (activeIdx < slides.length - 1) slides[activeIdx + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      if (activeIdx > 0) slides[activeIdx - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>
